@@ -4,6 +4,8 @@ const server = express();
 
 server.use(express.json());
 
+const port = 3007;
+
 // Query params = ?nome=NodeJS
 // Route params = /curso/2
 // Request Body = { nome: 'NodeJS', tipo: 'Backend' }
@@ -15,7 +17,7 @@ const cursos = ['Node JS', 'JavaScript','React Native', 'Java'];
 //Middleware Global
 server.use((req,res,next)=>{
     console.log(`URL CHAMADA: ${req.url}`);
-    
+    //console.log(`Body: ${req.body}`);
     return next();
 });
 
@@ -43,14 +45,14 @@ function checkCurso(req,res,next){
 // localhost:3007/cursos
 //Lista todos os cursos
 server.get('/cursos', (req,res)=>{
-    return res.json(cursos);
+    return res.json({cursos: cursos});
 });
 
 //Lista Curso especifico
 server.get('/cursos/:index',checkIndexCurso, (req,res)=>{
     //const { index } = req.params;
     //return res.json(cursos[index]);
-    return res.json(req.curso);
+    return res.json({curso: req.curso});
 });
 
 //Criando um novo Curso
@@ -79,4 +81,6 @@ server.delete('/cursos/:index', checkIndexCurso, (req,res)=>{
 });
 
 
-server.listen(3007);
+server.listen(port, ()=>{
+    console.log(`Server listening on port ${port}`)
+});
